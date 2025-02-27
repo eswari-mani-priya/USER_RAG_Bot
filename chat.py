@@ -25,7 +25,7 @@ def decrypt_value(encrypted_value):
     """Decrypt a value using Fernet."""
     return cipher.decrypt(encrypted_value.encode()).decode()
 
-encrypted_env = dotenv_values(".env")
+encrypted_env = dotenv_values(".env.encrypted")
 for key, encrypted_value in encrypted_env.items():
     os.environ[key] = decrypt_value(encrypted_value)
 
