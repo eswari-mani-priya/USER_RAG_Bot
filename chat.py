@@ -89,4 +89,4 @@ async def chat_with_bot(request: ChatRequest) -> dict:
 if __name__ == "__main__":
     import uvicorn
     print("🚀 Starting FastAPI server on http://127.0.0.1:5000")
-    uvicorn.run(app, host="127.0.0.1", port=5000, reload=True)
+    uvicorn.run(app, host="127.0.0.1", port=5000, reload=False)
