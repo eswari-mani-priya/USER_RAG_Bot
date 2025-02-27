@@ -9,13 +9,25 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import warnings
 import os
-from dotenv import load_dotenv
+from cryptography.fernet import Fernet
+from dotenv import load_dotenv, dotenv_values
 load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+cipher = Fernet(SECRET_KEY.encode())
 try:
     from langflow.load import upload_file
 except ImportError:
     warnings.warn("Langflow provides a function to help you upload files to the flow. Please install langflow to use it.")
     upload_file = None
+
+def decrypt_value(encrypted_value):
+    """Decrypt a value using Fernet."""
+    return cipher.decrypt(encrypted_value.encode()).decode()
+
+encrypted_env = dotenv_values(".env")
+for key, encrypted_value in encrypted_env.items():
+    os.environ[key] = decrypt_value(encrypted_value)
 
 BASE_API_URL = os.getenv("BASE_API_URL")
 LANGFLOW_ID = os.getenv("LANGFLOW_ID")
